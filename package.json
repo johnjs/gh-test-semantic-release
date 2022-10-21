@@ -12,7 +12,7 @@
     "url": "git+https://github.com/johnjs/gh-test-semantic-release.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/johnjs/gh-test-semantic-release/issues"
   },
