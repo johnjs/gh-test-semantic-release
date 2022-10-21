@@ -6,7 +6,7 @@ on:
 
 jobs:
   release:
-    name: Release
+    name: Release & publication
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: npx ci
       - name: Test
@@ -25,11 +24,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
-      - name: Publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          MODULE_VERSION=$(git describe --tags --always)
-          npm --no-git-tag-version version $MODULE_VERSION
-          npm publish --access public
-          
+

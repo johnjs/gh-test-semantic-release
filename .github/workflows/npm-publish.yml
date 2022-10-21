@@ -1,0 +1,21 @@
+name:  Publish Package to npm registry
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+        run: |
+          MODULE_VERSION=$(git describe --tags --always)
+          npm --no-git-tag-version version $MODULE_VERSION
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
