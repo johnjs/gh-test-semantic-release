@@ -28,7 +28,7 @@ jobs:
         run: npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
       - name: Publish
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           MODULE_VERSION=$(git describe --tags --always)
           npm --no-git-tag-version version $MODULE_VERSION
