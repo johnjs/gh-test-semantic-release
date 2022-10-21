@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-        run: |
+      - run: |
           MODULE_VERSION=$(git describe --tags --always)
           npm --no-git-tag-version version $MODULE_VERSION
           npm publish --access public
