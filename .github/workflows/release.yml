@@ -17,12 +17,6 @@ jobs:
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies
-        run: npx ci
-      - name: Test
-        run: npm run test
-      - name: Build
-        run: npm run build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
