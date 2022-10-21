@@ -25,5 +25,14 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
+      - name: Publish
+        with:
+          registry-url: https://registry.npmjs.org/
+        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+        run: |
+          MODULE_VERSION=$(git describe --tags --always)
+          npm --no-git-tag-version version $MODULE_VERSION
+          npm publish
+          
