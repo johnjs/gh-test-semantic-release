@@ -25,6 +25,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           PREV_MODULE_VERSION=$(git describe --tags --always)
+          echo $PREV_MODULE_VERSION
+          git branch
           npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
           CURRENT_MODULE_VERSION=$(git describe --tags --always)
           echo "$PREV_MODULE_VERSION vs $CURRENT_MODULE_VERSION"
