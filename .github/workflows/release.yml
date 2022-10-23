@@ -24,11 +24,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          PREV_MODULE_VERSION=$(git describe --tags --always)
+          PREV_MODULE_VERSION=$(git describe --tags --abbrev=0)
           echo $PREV_MODULE_VERSION
           git branch
           npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
-          CURRENT_MODULE_VERSION=$(git describe --tags --always)
+          CURRENT_MODULE_VERSION=$(git describe --tags --abbrev=0)
           echo "$PREV_MODULE_VERSION vs $CURRENT_MODULE_VERSION"
 #          if [[ ${{ PREV_MODULE_VERSION != CURRENT_MODULE_VERSION }} ]]; then
 #            echo "Publish started..."
