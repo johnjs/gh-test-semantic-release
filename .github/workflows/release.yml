@@ -22,15 +22,17 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           PREV_MODULE_VERSION=$(git describe --tags --always)
           npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
           CURRENT_MODULE_VERSION=$(git describe --tags --always)
           echo "$PREV_MODULE_VERSION vs $CURRENT_MODULE_VERSION"
-      - name: Publish
-        if: ${{ PREV_MODULE_VERSION !== CURRENT_MODULE_VERSION }}}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm --no-git-tag-version version $MODULE_VERSION
-          npm publish --access public
+          if [[ ${{ PREV_MODULE_VERSION != CURRENT_MODULE_VERSION }} ]]; then
+            echo "Publish started..."
+            npm --no-git-tag-version version $MODULE_VERSION
+            npm publish --access public
+          else
+              echo "There is no need to publish the package, skipping"
+          fi
+
