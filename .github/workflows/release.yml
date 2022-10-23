@@ -16,8 +16,21 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: npx ci
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
-
+        run: |
+          PREV_MODULE_VERSION=$(git describe --tags --always)
+          npx semantic-release --tag-format "\${version}" --branches "main" --plugins "@semantic-release/commit-analyzer" "@semantic-release/release-notes-generator" "@semantic-release/github"
+          CURRENT_MODULE_VERSION=$(git describe --tags --always)
+          echo "$PREV_MODULE_VERSION vs $CURRENT_MODULE_VERSION"
+      - name: Publish
+        if: ${{ PREV_MODULE_VERSION !== CURRENT_MODULE_VERSION }}}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm --no-git-tag-version version $MODULE_VERSION
+          npm publish --access public
