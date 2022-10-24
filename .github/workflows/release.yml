@@ -24,6 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          git fetch --tags
           PREV_MODULE_VERSION=$(git describe --tags --always --abbrev=0)
           echo $PREV_MODULE_VERSION
           git branch
